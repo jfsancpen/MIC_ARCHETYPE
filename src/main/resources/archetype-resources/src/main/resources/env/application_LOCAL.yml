@@ -1,0 +1,100 @@
+
+# Configuración básica del microservicio
+project:
+  artifactId: @project.artifactId@
+  name: @project.name@
+  version: @project.version@
+  description: @project.description@
+  
+info:
+  build:
+    artifactId: ${project.artifactId}
+    name: ${project.name}
+    version: ${project.version}
+    description: ${project.description}
+    
+server:
+  port: 9016
+  ssl: 
+    enabled: false 
+
+eurekaHostName: localhost
+adminHostName: localhost
+
+spring:
+  application:
+    name: ${project.name}
+  serviceVersion: v1
+
+endpoints:
+  autoconfig:
+    sensitive: true
+    enabled: true
+  beans:
+    enabled: true
+    sensitive: true
+    id: springbeans
+  sensitive: true
+  restart:
+    enabled: true
+  refresh:
+    enabled: true
+  shutdown:
+    enabled: true
+  metrics:
+    enabled: true
+  enabled: true
+  actuator:
+    enabled: true
+    sensitive: true
+eureka:
+  server:
+    a-sgupdate-interval-ms: 1000
+    wait-time-in-ms-when-sync-empty: 0
+    renewal-threshold-update-interval-ms: 5000
+    sync-when-timestamp-differs: true
+  client:
+    enabled: true
+    healthcheck:
+      enabled: true
+    use-dns-for-fetching-service-urls: false
+    availability-zones:
+      eurekaN1: 'eurekaN1'
+    registerWithEureka: true
+    fetchRegistry: true
+    serviceUrl:
+      'eurekaN1': 'http://${eurekaHostName}:9002/eureka/'
+      defaultZone: http://${eurekaHostName}:9012/eureka/
+    instance-info-replication-interval-seconds: 5
+    registry-fetch-interval-seconds: 5
+    
+  instance:
+    lease-expiration-duration-in-seconds: 5
+    lease-renewal-interval-in-seconds: 5
+    metadata-map: 
+      instanceId: ${spring.application.name}:${server.port}
+      version: ${project.version}
+      spring-application-name: ${spring.application.instance_id:${random.value}}
+    app-group-name: microservicios
+    appname: ${spring.application.name}
+    secure-port-enabled: false
+    secure-port: 9016
+    home-page-url: http://${eurekaHostName}:${server.port}/
+    secure-virtual-host-name: ${spring.application.name}
+    non-secure-port-enabled: true
+    health-check-url: http://${eurekaHostName}:${server.port}/health
+    status-page-url: http://${eurekaHostName}:${server.port}/info
+    
+logging:
+  level:
+    ROOT: INFO
+    org:
+      springframework:
+        web: INFO
+      hibernate: INFO
+health:
+  hystrix:
+    enabled: true        
+ribbon:
+  IsSecure: true
+ 
